@@ -1,0 +1,27 @@
+{
+    "layout":
+    {
+        "type": "OneGraph",
+        "def":
+        {
+            "graph":
+            {
+                "objects": [
+                {
+                    "type": "Point",
+                    "def":
+                    {
+                        "coordinates": [6, 4]
+                    }
+                },
+                {
+                    "type": "Point",
+                    "def":
+                    {
+                        "coordinates": [3, 8]
+                    }
+                }]
+            }
+        }
+    }
+}

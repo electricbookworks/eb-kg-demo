@@ -1,0 +1,117 @@
+---
+# KG styles, processed by Jekyll and Sass into kg.css
+---
+
+// Variables
+
+$kg-font-size: 10px;
+$kg-accent-color: #3182bd;
+$kg-watermark-color: lightgray;
+$kg-tick-color: gray;
+$kg-borders-color: #999;
+$kg-warning-color: #d62728;
+$kg-line-height-default: 1.4em;
+$kg-borders-thickness: 2px;
+
+// Imports
+
+@import "katex/katex.css";
+
+
+// KG styles
+.kg-container {
+    min-width: 1080px; // KG layout needs roughly this size
+    margin-left: calc(-1 * ((1080px - 100%) / 2)); // centres container on page
+    text {
+        cursor: default;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        font-size: $kg-font-size;
+        &::selection {
+            background: none;
+        }
+    }    
+    hr {
+        margin: auto;
+        text-align: initial;
+    }
+    input {
+        font-family: KaTeX_Main;
+        padding: 0;
+        &[type="checkbox"] {
+            display: inline;
+            margin: 0;
+            width: auto;
+        }
+    }
+    .katex {
+        font-size: 1em;
+    }
+    .watermark {
+        position: fixed;
+        bottom: 5px;
+        right: 5px;
+        opacity: 0.5;
+        z-index: 99;
+        color: $kg-watermark-color;
+        a {
+            color: $kg-watermark-color;
+        }
+    }
+    .tick {
+        text {
+            fill: $kg-tick-color;
+        }
+        line {
+            stroke: $kg-tick-color;
+        }
+    } 
+    table {
+        &.gameMatrix {
+            border-collapse: collapse;
+            tr {
+                td {
+                    border: $kg-borders-thickness solid $kg-borders-color;
+                    padding: 1rem;
+                    text-align: center;
+                    font-size: 14pt;
+                    &.player1 {
+                        color: $kg-accent-color;
+                        &.payoff {
+                            border-right: 0;
+                        }
+                    }
+                    &.player2 {
+                        color: $kg-warning-color;
+                        &.payoff {
+                            border-left: 0;
+                        }
+                    }
+                    &.empty {
+                        border: 0;
+                    }
+                    &.strategy {
+                        font-weight: bolder;
+                    }
+                }
+            }
+        }
+    }
+    .kg-yaml {
+        color: white;
+    }
+
+    // kgjs doesn't write width and height attributes to its SVGs in Firefox and Edge.
+    // So for now we need a workaround to make space for the SVG.
+    // See https://css-tricks.com/scale-svg/
+    // Also see, for background:
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=736431
+   box-sizing: content-box;
+   height: 1px;
+   overflow: visible;
+   padding-bottom: 92%; // fallback for Opera Mini
+   padding-bottom: calc(100% * 4 / 4); // assumes square image. For a 3:4 ratio, use 3 / 4
+   width: 100%;
+}

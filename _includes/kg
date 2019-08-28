@@ -1,0 +1,92 @@
+{% capture kg-wrapper %}
+
+{% comment %}Set the location of KG graph definitions.
+By default, they are stored as JSON files in `_kg/graphs`.
+You can choose instead to store them in `_data/kg`
+as either JSON or yaml files. To change to `_data/kg`,
+set this value to just `_data` instead of `_kg`.{% endcomment %}
+{% assign kg-graph-location = '_kg' %}
+
+{% comment %}Create styles for non-interactive formats here.
+This way, we don't have to add another stylesheet to EPUB,
+which would be complex to manage.{% endcomment %}
+{% capture kg-non-interactive-styles %}
+    border: 1px solid gray;
+    box-sizing: border-box;
+    height: auto;
+    margin: 1em;
+    padding: 0.5em;
+    width: auto;
+{% endcapture %}
+
+{% comment %}Get the book and page metadata,
+mainly for path-to-root-directory{% endcomment %}
+{% include metadata %}
+
+{% comment %}Get localisations and create fallbacks.{% endcomment %}
+{% if locale.kg.link-prefix and locale.kg.link-prefix != "" %}
+    {% capture kg-link-prefix %}{{ locale.kg.link-prefix }}{% endcapture %}
+{% else %}
+    {% capture kg-link-prefix %}See this interactive graph at {% endcapture %}
+{% endif %}
+{% if locale.kg.link-suffix and locale.kg.link-suffix != "" %}
+    {% capture kg-link-suffix %}{{ locale.kg.link-suffix }}{% endcapture %}
+{% else %}
+    {% capture kg-link-suffix %}{% endcapture %}
+{% endif %}
+
+{% comment %}Wrap everything in a div, so that we have more CSS options,
+and so that indented code inside this div doesn't get
+output as a code block by kramdown.{% endcomment %}
+<div class="kg-wrapper">
+
+    {% comment %}Output the KG graph if we're generating web or app output{% endcomment %}
+    {% if site.output == "web" or site.output == "app" %}
+
+        {% comment %}Get the KG script{% endcomment %}
+        <script src="{{ path-to-root-directory }}kg/js/kg.0.2.0.js"></script>
+
+        {% comment %}Add KG styles to the page{% endcomment %}
+        <link rel="stylesheet" type="text/css" href="{{ path-to-root-directory }}kg/styles/kg.css" />
+
+        {% comment %}Build the KG div{% endcomment %}
+        <div class="kg-container"
+
+            {% comment %}Get the graph if in _kg.{% endcomment %}
+            {% assign kg-data-file = include.graph | split: "." | first %}
+            {% if kg-graph-location == '_kg' %}
+                src="{{ path-to-root-directory }}kg/graphs/{{ include.graph }}.json"
+            {% endif %}>
+
+            {% comment %}Get the graph if it's in _data.{% endcomment %}
+            {% if kg-graph-location == "_data" %}
+                {% assign kg-data-file = include.graph | split: "." | first %}
+                {% assign kg-data = site.data.kg[kg-data-file] | jsonify %}
+                {{ kg-data }}
+            {% endif %}
+
+        </div>
+
+    {% comment %}If this isn't web or app output, show a placeholder{% endcomment %}
+    {% else %}
+
+        {% if include.link %}
+
+            <div class="kg-container kg-container-non-interactive" style="{{ kg-non-interactive-styles }}">
+                <p>
+                    {{ kg-link-prefix }}<a href="{{ include.link | strip }}">{{ include.link | strip }}</a>{{ kg-link-suffix }}
+                </p>
+            </div>
+
+        {% else %}
+
+            <!-- Interactive {{ include.graph }} not generated in this output. -->
+
+        {% endif %}
+
+    {% endif %}
+
+</div>
+
+{% comment %}Reduce and output our HTML.{% endcomment %}
+{% endcapture %}{{ kg-wrapper | strip | strip_newlines }}

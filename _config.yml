@@ -88,6 +88,8 @@ collections:
     output: true
   items:
     output: true
+  kg:
+    output: true
 
 # --------------------------------------------
 # CHANGE THESE SETTINGS ONLY IF/WHEN NECESSARY
