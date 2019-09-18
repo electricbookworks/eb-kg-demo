@@ -1,0 +1,21 @@
+params:
+  - {name: x, value: 3, min: 2, max: 8, round: 0.01}
+  - {name: y, value: 4, min: 2, max: 8, round: 0.01}
+layout:
+  OneGraphPlusSidebar:
+    graph:
+      objects:
+
+      - Point:
+          coordinates: [params.x, params.y]
+          draggable: true
+
+    sidebar:
+      controls:
+      - title: Simple Interactive Graph
+        description: Move the dot by dragging it or by using the sliders below.
+        sliders:
+        - param: x
+          label: x
+        - param: y
+          label: y

@@ -102,16 +102,4 @@ $kg-borders-thickness: 2px;
     .kg-yaml {
         color: white;
     }
-
-    // kgjs doesn't write width and height attributes to its SVGs in Firefox and Edge.
-    // So for now we need a workaround to make space for the SVG.
-    // See https://css-tricks.com/scale-svg/
-    // Also see, for background:
-    // https://bugzilla.mozilla.org/show_bug.cgi?id=736431
-   box-sizing: content-box;
-   height: 1px;
-   overflow: visible;
-   padding-bottom: 92%; // fallback for Opera Mini
-   padding-bottom: calc(100% * 4 / 4); // assumes square image. For a 3:4 ratio, use 3 / 4
-   width: 100%;
 }
